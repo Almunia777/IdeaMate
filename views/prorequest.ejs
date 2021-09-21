@@ -1,0 +1,141 @@
+<%- include("partials/header") %>
+<link rel="stylesheet" type="text/css" href="/static/prorequest.css">
+<div class="row user-details pl-4">
+	<div class="col-2 rounded-circle DP p-0">
+	<% if(currentUser.id==user.id){ %>
+	<a href="/prfl/<%=user._id %>/edit" id="edit"><i class="fas fa-edit edit"></i></a>
+	<% } %>
+	</div>
+	<div class="col-10 info">
+		<div id="top">
+			<h2 id="username" class="mr-5">
+			<%=user.username%>
+			</h2>
+				<% if(user.id!==currentUser.id){ %>
+				<button type="button" id="connect" onclick="sendRequest(event)" data-user-id="<%=user._id%>" class="btn btn-				primary btn-sm ml-5 btn-info">
+					<p id="status">
+						<%	var stat= function(use, reqId){
+							// console.log(reqId);
+							use.forEach(function(ids){
+								if(ids.userId==reqId){
+									return 1;
+								}
+							});
+						}
+						if(stat(user.request, currentUser.id)!==1){ %> Connect <%}
+						else{ %>Disconnect <% } %>
+					</p><i class="fas fa-user-plus ml-2 mt-1"></i></button>
+				<% } %>
+			</div>
+		<p>
+			<i class="fas fa-home"></i> <%=user.city%>
+		</p>
+		<p>
+			<i class="fas fa-briefcase"></i> <%=user.job%>
+		</p>
+		<p>
+			<i class="fas fa-graduation-cap"></i> <%=user.university%>
+		</p>
+	</div>
+</div>
+<% if(user.id==currentUser.id){ %>
+<div class="row swap d-flex justify-content-around">
+	<div class="col-3">
+		<form action="/prfl/<%=user.id%>" method="get">
+			<button class="btn btn-secondary switch" id="pos" type="submit">Posts</button>
+		</form>
+	</div>
+	<div class="col-3">
+		<form action="/prorequest/<%=user.id%>" method="get">
+			<button class="btn btn-secondary switch" type="submit" id="reque">Requests</button>
+		</form>
+	</div>
+	<div class="col-3">
+		<form action="/friend/<%=user.id%>" method="get">
+			<button class="btn btn-secondary switch" id="fri" type="submit">Friends	</button>
+		</form>
+	</div>
+</div>
+<% } %>
+<div class="container row posts-container"> 
+    <div class="col-md-12">
+	<% if(user.id==currentUser.id){ %>
+		<div class="col-md-12 requests pl-3 px-2 my-3 re">
+			<h5>Connection Requests</h5> 
+			<%user.request.forEach(function(requ){ %>
+				<div class="row pl-2">
+					<div class="col-10">
+						<p class="name"><%=requ.username%></p>
+					</div>					
+					<div class="col-2 d-flex px-0 reqAction justify-content-around">
+						<button class="btn btn-primary react" onclick="accept(event)" data-user-id="<%=requ.userId%>"><i class="fas fa-check-circle"></i></button>
+						<button class="btn btn-primary react" onclick="reject(event)" data-user-id="<%=requ.userId%>"><i class="fas fa-times-circle"></i></button>
+					</div>
+				</div>
+			<% });%>	
+		</div>
+	<% } %>
+    </div>  
+</div> 
+<script>
+	var updateConnectStats = {
+    Connect: function () {
+    	document.querySelector('#status').textContent = "Disconnect";
+    },
+    Disconnect: function() {
+      document.querySelector('#status').textContent = "Connect";
+    }
+};	
+var sendRequest= function(event){
+	// console.log(event.currentTarget.dataset.userId);
+	var userId= event.currentTarget.dataset.userId;
+	var action= event.currentTarget.textContent.trim();
+	updateConnectStats[action]();
+	axios.post('/sendRequest/'+userId);
+}
+	var updatePostStats = {
+    Like: function (postId) {
+    	document.querySelector('#likes-count-'+postId).textContent++;
+    },
+    Unlike: function(postId) {
+      document.querySelector('#likes-count-'+postId).textContent--;
+    }
+  };
+	var toggleButtonText = {
+    Like: function(button) {
+      button.textContent = "Unlike";	
+    },
+    Unlike: function(button) {
+      button.textContent = "Like";
+    }
+  };
+	var actOnPost = function (event) {
+    var postId = event.target.dataset.postId;
+    var action = event.target.textContent.trim();
+	toggleButtonText[action](event.target);
+    updatePostStats[action](postId);
+    axios.post('/posts/' + postId + '/act', { action: action });
+  };
+	
+	var accept= function(event){
+		var userId= event.currentTarget.dataset.userId,
+			action= "Accept";
+		var x= document.querySelectorAll(".reqAction")
+		for(var i = 0; i < x.length; i++){
+    	x[i].textContent="Accepted!";    
+    	}
+		axios.post('/connect/'+userId, { action: action});
+	}
+	var reject= function(event){
+		var userId= event.currentTarget.dataset.userId,
+			action= "Reject";
+		var x= document.querySelectorAll(".reqAction");
+		for(var i = 0; i < x.length; i++){
+		console.log(x[i]);
+    	x[i].addEventListener("click", function(){this.textContent="Rejected!";});    
+    	}
+		axios.post('/connect/'+userId, { action: action});
+	}
+</script>
+
+<%- include("partials/footer") %>

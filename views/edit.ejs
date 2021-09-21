@@ -1,0 +1,14 @@
+<%- include("partials/header") %>
+<link rel="stylesheet" type="text/css" href="/static/post.css">
+<div class="container grand">
+	<div class="container parent">
+		<form action="/ideas/<%= idea._id%>?_method=PUT" method="POST">
+			<label for="name">Edit Title</label> 
+    		<input type="text" id="title" name="title" placeholder="" value="<%= idea.title %>" required>
+			<label for="desc">Edit ur Idea</label> 
+    		<textarea id="desc" name="details" rows="10" placeholder="Description" required><%=idea.details%> </textarea> 
+			<button class="btn btn-success" type="submit">Submit</button> 
+		</form>
+	</div>
+</div>
+<%- include("partials/footer") %>

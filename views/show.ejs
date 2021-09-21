@@ -1,0 +1,27 @@
+<%- include("partials/header") %>
+<link rel="stylesheet" type="text/css" href="/static/show.css">
+<div class="container idea p-0 mt-2">
+	<div class="posts">
+		<% if(idea.img.contentType !== null){ %>
+		<div class="post-img">
+			<img src="data:image/<%=idea.img.contentType%>;base64, <%=idea.img.data.toString('base64')%>"> 
+		</div>
+		<% } %>
+		<h3><%= idea.title %></h3> 
+		<a href="/prfl/<%= idea.creator.userId %>" id="creat"><p id="creator"> By: <%=idea.creator.username%></p></a>
+        <p><%- idea.details %></p>
+	</div>	
+	<% if(idea.creator.userId==currentUser._id){ %>
+	<div class="row">
+		<div class="col-6 p-0">
+			<a href="/ideas/<%= idea._id %>/edit" role="button" id="edit" class="btn btn-secondary btn-lg btn-block">Edit Post</a>	
+		</div>
+		<div class="col-6 p-0">
+			<form action="/ideas/<%= idea._id %>?_method=DELETE" method="POST">
+				<button class="btn btn-danger btn-lg btn-block" id="delete">Delete Post</button>
+			</form>	
+		</div>
+	</div>
+	<% } %>
+</div>
+<%- include("partials/footer") %>

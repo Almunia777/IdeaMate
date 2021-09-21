@@ -1,0 +1,17 @@
+<%- include("partials/header") %>
+<link rel="stylesheet" type="text/css" href="/static/sign.css">
+
+<div class="container row mx-0">
+	<div class="form-left col-12 px-0">
+    	<form class="form-detail py-0" action="/signup" method="POST">
+	        <h1 class="display-3">SIGN UP</h1>
+            <input type="text" name="username" id="full-name" class="input-text" placeholder="Username" required>
+            <input type="text" name="youremail" id="your-email" class="input-text" placeholder="Email Address" required pattern="[^@]+@[^@]+.[a-zA-Z]{2,6}"><br>
+            <input type="password" name="password" id="password" class="input-text" placeholder="Password" required><br>
+            <input type="text" name="City" id="city" class="input-text" placeholder="CITY Name" required>
+            <input type="submit" name="register" class="register" value="Register">
+        </form>
+    </div>
+</div>
+
+	<%- include("partials/footer") %>

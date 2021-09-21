@@ -1,0 +1,79 @@
+<%- include("partials/header") %>
+<link rel="stylesheet" type="text/css" href="/static/idea.css">
+<form action="/prfl" method="POST">
+	<input type="text" id="search" placeholder="Search Profiles" name="search" value="">
+	<button class="btn btn-info" id="searchbtn" type="submit"><i class="fas fa-search"></i></button>
+</form>
+<div id="postbtn">
+	<a href="/ideas/new" role="button" class="btn btn-outline-success btn-lg btn-block postlink"><i class="fas fa-pen"></i>Create New Post</a>
+</div>
+<div class="container row">  
+       	<div class="col-md-8">
+			<% items.forEach(function(idea) { %>
+				<div class="col-md-12 ideas px-0 my-3">
+					<a href="/ideas/<%= idea._id %>" class="post">
+					<div class="posts px-2"> 
+						<h5><%= idea.title %></h5> 
+						<p id="creator">
+							-<%=idea.creator.username%>
+						</p>
+						<% if(idea.img.contentType !== null){ %>
+						<div class="post-img px-3 mb-2">
+							<img src="data:image/<%=idea.img.contentType%>;base64, <%=idea.img.data.toString('base64')%>"> 
+						</div>	
+						<% } %>
+                    	<p><%- idea.details.substring(0, 50) %>....</p> 
+					</div>
+					</a>
+					<!-- <a href="/ideas/<%= idea._id %>/edit" role="button" class="btn btn-secondary btn-lg btn-block">Edit Post</a> -->
+		<div class="row interact">
+		<div class="col-6 p-0 d-flex">
+			<div class="col-10 p-0">
+				<button class="btn btn-secondary btn-lg btn-block like" onclick="actOnPost(event);" data-post-id="<%=idea._id%>">Like</button>	
+			</div>
+			<div class="col-2 p-0" id="like-dis">
+				<span id="likes-count-<%=idea.id%>" class="lik"><%=idea.likes_count%></span>
+			</div>
+		</div>
+			
+		<div class="col-6 p-0">
+			<button class="btn btn-danger btn-lg btn-block" id="comment">Comment</button>
+		</div>
+	</div>
+				</div>
+			<% }) %>
+        </div>  
+		<div class="col-md-4 my-3">
+		<div class="col-md-12 extras">
+			<p>This is the extras col.</p>
+		</div>
+	</div>
+</div> 
+<!-- <script src="/socket.io/socket.io.js"></script> -->
+<script>
+	var updatePostStats = {
+    Like: function (postId) {
+		// console.log(document.querySelector('#'+postId));
+    	document.querySelector('#likes-count-'+postId).textContent++;
+    },
+    Unlike: function(postId) {
+      document.querySelector('#likes-count-'+postId).textContent--;
+    }
+  };
+	var toggleButtonText = {
+    Like: function(button) {
+      button.textContent = "Unlike";	
+    },
+    Unlike: function(button) {
+      button.textContent = "Like";
+    }
+  };
+	var actOnPost = function (event) {
+    var postId = event.target.dataset.postId;
+    var action = event.target.textContent.trim();
+	toggleButtonText[action](event.target);
+    updatePostStats[action](postId);
+    axios.post('/posts/' + postId + '/act', { action: action });
+  };
+</script>
+<%- include("partials/footer") %>

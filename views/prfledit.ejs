@@ -1,0 +1,20 @@
+<%- include("partials/header") %>
+<link rel="stylesheet" type="text/css" href="/static/prfledit.css">
+<div class="container grand">
+	<div class="container parent">
+		<form action="/prfl/<%=user._id%>?_method=PUT" method="POST">
+			<label for="username">Edit Username</label> 
+    		<input type="text" id="username" name="username" placeholder="" value="<%= user.username %>" required>
+			<label for="city">Edit Home City</label> 
+    		<input type="text" id="city" name="city" placeholder="" value="<%= user.city %>" required>
+			<label for="email">Edit EMail</label> 
+    		<input type="text" id="email" name="email" placeholder="" value="<%= user.email %>" required>
+			<label for="job">Edit Job</label> 
+    		<input type="text" id="job" name="job" placeholder="" value="<%= user.job %>" required>
+			<label for="job">Edit University/college</label> 
+    		<input type="text" id="university" name="university" placeholder="" value="<%= user.university %>" required>
+			<button class="btn btn-success" type="submit">Submit</button> 
+		</form>
+	</div>
+</div>
+<%- include("partials/footer") %>

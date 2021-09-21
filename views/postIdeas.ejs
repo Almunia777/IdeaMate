@@ -1,0 +1,16 @@
+<%- include("partials/header") %>
+<link rel="stylesheet" type="text/css" href="/static/post.css">
+<div class="container grand">
+	<div class="container parent">
+	<form action="/ideas" method="POST" enctype="multipart/form-data">
+	<label for="name">Idea Title</label> 
+    <input type="text" id="name" placeholder="" value="" name="name" required>
+	<label for="desc">Describe ur Idea</label> 
+    <textarea id="desc" name="desc" value="" rows="2" placeholder="Description" required> </textarea> 
+	<label for="image">Upload Image</label> 
+    <input type="file" id="image" name="image" value="null"> 
+	<button class="btn btn-success" type="submit">Submit</button> 
+</form>
+</div>
+</div>
+<%- include("partials/footer") %>

@@ -1,0 +1,77 @@
+<%- include("partials/header") %>
+<link rel="stylesheet" type="text/css" href="/static/friend.css">
+<div class="row user-details pl-4">
+	<div class="col-2 rounded-circle DP p-0">
+	<% if(currentUser.id==user.id){ %>
+	<a href="/prfl/<%=user._id %>/edit" id="edit"><i class="fas fa-edit edit"></i></a>
+	<% } %>
+	</div>
+	<div class="col-10 info">
+		<div id="top">
+			<h2 id="username" class="mr-5">
+			<%=user.username%>
+			</h2>
+		</div>
+		<p>
+			<i class="fas fa-home"></i> <%=user.city%>
+		</p>
+		<p>
+			<i class="fas fa-briefcase"></i> <%=user.job%>
+		</p>
+		<p>
+			<i class="fas fa-graduation-cap"></i> <%=user.university%>
+		</p>
+	</div>
+</div>
+<% if(user.id==currentUser.id){ %>
+<div class="row swap d-flex justify-content-around">
+	<div class="col-3">
+		<form action="/prfl/<%=user.id%>" method="get">
+			<button class="btn btn-secondary switch" id="pos" type="submit">Posts</button>
+		</form>
+	</div>
+	<div class="col-3">
+		<form action="/prorequest/<%=user.id%>" method="get">
+			<button class="btn btn-secondary switch" type="submit" id="reque">Requests</button>
+		</form>
+	</div>
+	<div class="col-3">
+		<form action="/friend/<%=user.id%>" method="get">
+			<button class="btn btn-secondary switch" id="fri" type="submit">Friends	</button>
+		</form>
+	</div>
+</div>
+<% } %>
+<div class="container row posts-container"> 
+    <div class="col-md-12">
+	<% if(user.id==currentUser.id){ %>
+		<div class="col-md-12 requests pl-3 px-2 my-3 re">
+			<h5>Connected People</h5> 
+			<%user.friendsList.forEach(function(frie){ %>
+				<div class="row pl-2">
+					<div class="col-10">
+						<p class="name"><%=frie.friendName%></p>
+					</div>					
+					<div class="col-2 d-flex px-0 frndAction justify-content-center">
+						<button class="btn btn-primary react" onclick="kick(event)" data-user-id="<%=frie.friendId%>"><i class="fas fa-times fa-md"></i></button>
+					</div>
+				</div>
+			<% });%>	
+		</div>
+	<% } %>
+    </div>  
+</div> 
+<script>	
+	var kick= function(event){
+		var userId= event.currentTarget.dataset.userId,
+			action= "Reject";
+		var x= document.querySelectorAll(".frndAction");
+		for(var i = 0; i < x.length; i++){
+		console.log(x[i]);
+    	x[i].addEventListener("click", function(){this.textContent="UnFriended!";});    
+    	}
+		axios.delete('/friend/'+userId);
+	}
+</script>
+
+<%- include("partials/footer") %>

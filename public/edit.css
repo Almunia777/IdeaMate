@@ -1,0 +1,80 @@
+html, body{
+	margin: 0;
+    height: 100%;
+	background-color: #C8C8C8;
+}
+
+body{
+	padding-top: 55px;
+}
+
+.container{
+	width:60%;
+}
+
+input{
+	outline: none;
+}
+
+.brand-center{
+	position: absolute;
+    left: 50%;
+    top: 25px;
+    text-align: center;
+    height: 65px;
+    display: flex;
+    overflow: hidden;
+    text-decoration: none;
+    transform: translate(-50%,-50%);
+    align-items: center;
+    align-self: center;
+    vertical-align: middle;
+    align-content: center;
+	font-family: 'Lobster', cursive;
+	letter-spacing: 3px;
+}
+
+.navbar{
+	 background-color: rgba(0, 0, 0, 0.5);
+	border-radius: 0px 0px 9px 9px; 
+}
+
+nav.navbar {
+  width: inherit;
+  top: 0%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.grand{
+		display:table; height:100%; margin: 0 auto;
+	}
+
+.parent{
+		display:table-cell; vertical-align:middle;
+		height: 200px; 
+	}	
+
+form{
+	text-align: center;
+}
+
+input, textarea{
+	display: block;
+	padding: 0;
+	margin: auto;
+	width: 70%;
+	margin-bottom: 10px;
+	border-radius: 10px;
+	border: none;
+	text-align: center;
+	outline: none;
+}
+
+#title{
+	height: 35px;
+}
+
+textarea{
+	min-height: 159px;
+}
